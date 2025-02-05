@@ -1,0 +1,25 @@
+import 'dotenv/config'
+
+const {
+  PORT = 8001,
+  EMAIL_ACCOUNT = "email@adress.es",
+  EMAIL_PASS = "your pass",
+  NODE_DOCKER_PORT = 5002,
+  MYSQL_LOCAL_PORT = 3307,
+  MYSQL_DOCKER_PORT = 3306,
+  BASE_URL = "http://localhost:3000/",
+  JWT_SECRET = "JWT_SECRET",
+  DB_CONNECTION_STRING ="DBCONNECTION_STRING_MONGODB"
+} = process.env;
+
+export const config = {
+  PORT,
+  EMAIL_ACCOUNT,
+  EMAIL_PASS,
+  NODE_DOCKER_PORT,
+  MYSQL_LOCAL_PORT,
+  MYSQL_DOCKER_PORT,
+  BASE_URL,
+  JWT_SECRET,
+  DB_CONNECTION_STRING
+};
