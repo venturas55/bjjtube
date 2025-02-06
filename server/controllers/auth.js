@@ -19,7 +19,7 @@ export const signup = async(req, res, next) => {
             userId: newUser._id,
             token: crypto.randomBytes(32).toString("hex"),
         }).save();
-        const url = `${req.headers.host}auth/${newUser.id}/verify/${token.token}`;
+        const url = `${req.headers.host}/api/auth/${newUser.id}/verify/${token.token}`;
         await sendEmail(newUser.email, "Verify Email", url);
         res.status(201).send({ message: "User created successfully. An Email sent to your account please verify" });
 
