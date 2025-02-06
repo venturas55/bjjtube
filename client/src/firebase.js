@@ -1,12 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 const firebaseConfig = {
-    apiKey: "AIzaSyCyh9mLOVviOh1YClelTPdmdU0wogK6KZA",
-    authDomain: "clone-8061c.firebaseapp.com",
-    projectId: "clone-8061c",
-    storageBucket: "clone-8061c.appspot.com",
-    messagingSenderId: "975218676373",
-    appId: "1:975218676373:web:d5595fc2166d435100819c"
+    apiKey: "exampleAPIKey",
+    authDomain: "example.firebaseapp.com",
+    projectId: "example",
+    storageBucket: "example.appspot.com",
+    messagingSenderId: "example",
+    appId: "example"
 };
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
