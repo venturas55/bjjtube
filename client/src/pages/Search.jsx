@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Card from "../components/Card";
 import LoadingComp from "../components/LoadingComp";
 import { SPACING } from "../constants";
+axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
 
 const Container = styled.div`
   display: flex;

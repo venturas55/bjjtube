@@ -4,6 +4,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { fetchComments } from "../helper";
+axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
 
 const Container = styled.div`
   display: flex;

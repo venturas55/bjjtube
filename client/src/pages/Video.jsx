@@ -10,6 +10,8 @@ import { SPACING, SIZES, COLORS } from '../constants';
 import { dislike, fetchSuccess, like } from '../redux/videoSlice';
 import { subscription } from '../redux/userSlice';
 import Recommendation from '../components/Recommendation';
+axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
+
 const Container = styled.div`
 display: flex;
 gap: ${SPACING.s}px;

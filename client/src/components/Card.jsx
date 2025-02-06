@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SIZES, SPACING } from '../constants';
 import timeago from 'timeago.js';
-
-
 import axios from 'axios';
 import LoadingComp from './LoadingComp';
+axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
 
 const Container = styled.div`
 display: ${(props) => props.type === 'sm' && 'flex'};

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { fetchAllSuccess } from '../redux/videosSlice';
+axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
 
 const Tag = styled.span`
     margin-right: 1rem;

@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/userSlice';
 import axios from 'axios';
 import { fetchAllFailure, fetchAllSuccess } from '../redux/videosSlice';
+axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
 
 const Container = styled.div`
     flex: 1;

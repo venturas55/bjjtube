@@ -6,6 +6,7 @@ import userRoutes from "./routes/users.js";
 import videoRoutes from "./routes/videos.js";
 import commentRoutes from "./routes/comments.js";
 import webRoutes from "./routes/web.js";
+import cors from "cors";
 import { config } from "./utils/config.js";
 import * as path from "path";
 import * as url from "url";
@@ -13,7 +14,7 @@ import handlebars from "./utils/handlebars.js"; //Para usar funciones en las pla
 import { engine } from "express-handlebars"; //Para usar plantillas
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const app = express();
-
+app.use(cors());
 app.set("views", path.join(__dirname, "views"));
 app.engine(".hbs",
   engine({
