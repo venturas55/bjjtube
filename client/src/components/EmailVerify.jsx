@@ -7,7 +7,8 @@ import { SIZES, SPACING } from '../constants';
 import { IoLogoYoutube } from "react-icons/io5";
 import { loginFailure, loginSuccess } from '../redux/userSlice';
 import { useDispatch } from 'react-redux';
-axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
+import { BASE_FETCH_URL } from '../config.js';
+axios.defaults.baseURL = BASE_FETCH_URL;
 
 const Container = styled.div`
     display: flex;

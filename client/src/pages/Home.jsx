@@ -6,7 +6,8 @@ import LoadingComp from '../components/LoadingComp';
 import Tags from '../components/Tags';
 import { fetchAllSuccess } from '../redux/videosSlice';
 import { useDispatch, useSelector } from 'react-redux';
-axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
+import { BASE_FETCH_URL } from '../config.js';
+axios.defaults.baseURL = BASE_FETCH_URL;
 
 const Container = styled.div`
 // background-color: red;//REMOVE

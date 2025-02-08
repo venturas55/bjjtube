@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SPACING } from "../constants";
 import Card from "./Card";
-axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
+import { BASE_FETCH_URL } from '../config.js';
+axios.defaults.baseURL = BASE_FETCH_URL;
 
 const Container = styled.div`
   flex: 2;
