@@ -14,7 +14,21 @@ import handlebars from "./utils/handlebars.js"; //Para usar funciones en las pla
 import { engine } from "express-handlebars"; //Para usar plantillas
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const app = express();
-app.use(cors());
+const allowedOrigins = [
+    'https://localhost:8001',
+    'https://bjjtube.guardiandelfaro.es', // Add more origins as needed
+    'https://bjjtube.adriandeharo.es'
+];
+app.use(cors({
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+ }));
 app.set("views", path.join(__dirname, "views"));
 app.engine(".hbs",
   engine({
