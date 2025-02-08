@@ -19,6 +19,7 @@ const allowedOrigins = [
     'https://bjjtube.guardiandelfaro.es', // Add more origins as needed
     'https://bjjtube.adriandeharo.es'
 ];
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 app.use(cors({
     origin: (origin, callback) => {
         // Allow requests with no origin (like mobile apps or curl requests)
