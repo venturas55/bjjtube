@@ -18,6 +18,9 @@ import { useSelector } from 'react-redux';
 import EmailVerify from './components/EmailVerify';
 import Connect from './pages/Connect';
 import PageNotFound from './pages/PageNotFound';
+import { BASE_FETCH_URL } from './config.js';
+axios.defaults.baseURL = BASE_FETCH_URL;
+
 const Container = styled.div`
 display: flex;
 background-color:${({ theme }) => theme.bg};

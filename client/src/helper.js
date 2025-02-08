@@ -1,5 +1,6 @@
 import axios from 'axios';
-axios.defaults.baseURL = 'http://adriandeharo.es:8001/api';
+import { BASE_FETCH_URL } from './config.js';
+axios.defaults.baseURL = BASE_FETCH_URL;
 export const fetchComments = async(videoId, setComments) => {
     try {
         const res = await axios.get(`/comments/${videoId}`);
