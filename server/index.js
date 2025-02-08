@@ -12,6 +12,8 @@ import * as path from "path";
 import * as url from "url";
 import handlebars from "./utils/handlebars.js"; //Para usar funciones en las plantillas
 import { engine } from "express-handlebars"; //Para usar plantillas
+import https from 'https'; // Import HTTPS module
+import fs from 'fs'; // Import file system module
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const app = express();
 const allowedOrigins = [
@@ -83,9 +85,19 @@ app.use("/js", express.static(path.join(__dirname, "../node_modules/bootstrap/di
 app.use("/fonts", express.static(path.join(__dirname, "../node_modules/font-awesome/fonts")));
 app.use("/css", express.static(path.join(__dirname, "../node_modules/font-awesome/css")));
 
+// HTTPS setup
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/adriandeharo.es/privkey.pem'), // Path to your SSL key
+    cert: fs.readFileSync('/etc/letsencrypt/live/adriandeharo.es/privkey.pem') // Path to your SSL certificate
+};
 
 const PORT = config.PORT || 8000;
-app.listen(PORT, () => {
+https.createServer(options, app).listen(PORT, () => {
+    connect();
+    console.log(`App is running on https://localhost:${PORT}`);
+});
+
+/* app.listen(PORT, () => {
     connect()
     console.log(`App is running on port http://localhost:${PORT}`);
-});
+}); */
