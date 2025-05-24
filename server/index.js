@@ -30,113 +30,33 @@ const allowedOrigins = [
     'http://bjjtube.guardiandelfaro.es:8001',
     'http://bjjtube.guardiandelfaro.es:8002'
 ];
-
-// Add middleware to handle CORS properly
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (origin && allowedOrigins.includes(origin)) {
-        res.header('Access-Control-Allow-Origin', origin);
-        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-        res.header('Access-Control-Allow-Credentials', 'true');
-    }
-    next();
-});
-
-// Add CORS middleware
+// Add CORS middleware to allow all origins
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(null, false);
-        }
-    },
+    origin: true,
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204
-}));
-
-// Remove the HTTPS server configuration since we're using Nginx for SSL
-const PORT = config.PORT || 8001;
-app.listen(PORT, () => {
-    connect();
-    console.log(`Server running on port http://localhost:${PORT}`);
-});
-
-// Add middleware to handle HTTPS and CORS properly
-app.use((req, res, next) => {
-    const origin = req.headers.origin;
-    if (origin) {
-        // Always allow HTTPS requests
-        if (origin.startsWith('https://')) {
-            res.header('Access-Control-Allow-Origin', origin);
-            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-            res.header('Access-Control-Allow-Credentials', 'true');
-            res.header('Access-Control-Expose-Headers', 'Content-Length');
-        }
-    }
-    next();
-});
-
-// Add additional CORS middleware to ensure proper handling
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(null, false);
-        }
-    },
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
     exposedHeaders: ['Content-Length'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     preflightContinue: false,
     optionsSuccessStatus: 204
 }));
 
-// Create a CORS middleware that will be applied to all routes
-const corsOptions = {
-    origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(null, false);
-        }
-    },
+// Add additional headers for all requests
+// Simplified CORS configuration to allow all origins
+app.use(cors({
+    origin: true,
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'X-Requested-With', 'Accept'],
+    exposedHeaders: ['Content-Length'],
     preflightContinue: false,
     optionsSuccessStatus: 204
-};
+}));
 
-// Apply CORS middleware to all routes
-app.use(cors(corsOptions));
+// Server configuration
+const PORT = config.PORT || 8001;
 
-// Also explicitly set the headers for all responses
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    next();
-});
-app.set("views", path.join(__dirname, "views"));
-app.engine(".hbs",
-  engine({
-    defaultLayout: "main",
-    layoutDir: path.join(app.get("views"), "layouts"),
-    partialsDir: path.join(app.get("views"), "partials"),
-    extname: ".hbs",
-    helpers: handlebars, 
-  }));
-app.set("view engine", ".hbs"); //Para utilizar el app.engine
-
+// Connect to MongoDB
 const connect = () => {
     mongoose.connect(config.DB_CONNECTION_STRING, {
         //useUnifiedTopology: true,
@@ -149,15 +69,18 @@ const connect = () => {
     });
 }
 
+// Middleware setup
 app.use(cookieParser());
 app.use(express.json());
 
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/", webRoutes);
 
+// Error handling
 app.use((err, req, res, next) => {
     const status = err.status || 500;
     const message = err.message || "Something went wrong";
@@ -168,42 +91,16 @@ app.use((err, req, res, next) => {
     });
 });
 
-
-//Public
-// Servir 'public' directamente
+// Static files
 app.use(express.static(path.join(__dirname, 'public')));
-// Bootstrap CSS en /bootstrap/css
 app.use('/bootstrap/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
-// Bootstrap JS en /bootstrap/js
 app.use('/bootstrap/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
-// jQuery en /jquery
 app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
-// Font Awesome CSS en /fontawesome/css
 app.use('/fontawesome/css', express.static(path.join(__dirname, 'node_modules/font-awesome/css')));
 app.use('/fontawesome/fonts', express.static(path.join(__dirname, 'node_modules/font-awesome/fonts')));
 
-
-const PORT = config.PORT || 8000;
-
-// Add HTTPS support
-const https = require('https');
-const fs = require('fs');
-
-// Load SSL certificates
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/adriandeharo.es/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/adriandeharo.es/fullchain.pem')
-};
-
-// Create HTTPS server
-const httpsServer = https.createServer(options, app);
-
-// Start both HTTP and HTTPS servers
+// Start server
 app.listen(PORT, () => {
-    connect()
-    console.log(`HTTP Server running on port http://localhost:${PORT}`);
-});
-
-httpsServer.listen(8001, () => {
-    console.log(`HTTPS Server running on port https://localhost:8001`);
+    connect();
+    console.log(`Server running on port http://localhost:${PORT}`);
 });
