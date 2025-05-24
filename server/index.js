@@ -17,23 +17,20 @@ const app = express();
 const allowedOrigins = [
     'https://localhost:8001',
     'https://bjjtube.guardiandelfaro.es',
-    'https://bjjtube.adriandeharo.es',
-    'http://localhost:8001',
-    'http://bjjtube.guardiandelfaro.es',
-    'http://bjjtube.adriandeharo.es',
-    'https://adriandeharo.es:8001',
     'http://adriandeharo.es:8001',
+    'https://adriandeharo.es:8001'
 ];
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 app.use(cors({
     origin: (origin, callback) => {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+        if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            callback(new Error('Not allowed by CORS'));
+            callback(null, false);
         }
-    }
+    },
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.set("views", path.join(__dirname, "views"));
 app.engine(".hbs",
