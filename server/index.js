@@ -14,16 +14,30 @@ import handlebars from "./utils/handlebars.js"; //Para usar funciones en las pla
 import { engine } from "express-handlebars"; //Para usar plantillas
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const app = express();
+
 const allowedOrigins = [
     'https://localhost:8001',
     'http://localhost:8001',
     'https://bjjtube.guardiandelfaro.es',
     'http://bjjtube.guardiandelfaro.es',
+    'https://bjjtube.adriandeharo.es',
+    'http://bjjtube.adriandeharo.es',
     'https://adriandeharo.es:8001',
     'http://adriandeharo.es:8001'
-
 ];
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin) {
+        // If request is coming from HTTPS, force HTTPS in response
+        if (origin.startsWith('https://')) {
+            res.header('Access-Control-Allow-Origin', origin);
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        }
+    }
+    next();
+});
 
 // Create a CORS middleware that will be applied to all routes
 const corsOptions = {
@@ -110,7 +124,26 @@ app.use('/fontawesome/fonts', express.static(path.join(__dirname, 'node_modules/
 
 
 const PORT = config.PORT || 8000;
+
+// Add HTTPS support
+const https = require('https');
+const fs = require('fs');
+
+// Load SSL certificates
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/adriandeharo.es/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/adriandeharo.es/fullchain.pem')
+};
+
+// Create HTTPS server
+const httpsServer = https.createServer(options, app);
+
+// Start both HTTP and HTTPS servers
 app.listen(PORT, () => {
     connect()
-    console.log(`App is running on port http://localhost:${PORT}`);
+    console.log(`HTTP Server running on port http://localhost:${PORT}`);
+});
+
+httpsServer.listen(8001, () => {
+    console.log(`HTTPS Server running on port https://localhost:8001`);
 });
