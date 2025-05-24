@@ -16,15 +16,55 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const app = express();
 
 const allowedOrigins = [
-    'https://localhost:8001',
     'http://localhost:8001',
     'https://bjjtube.guardiandelfaro.es',
     'http://bjjtube.guardiandelfaro.es',
     'https://bjjtube.adriandeharo.es',
     'http://bjjtube.adriandeharo.es',
     'https://adriandeharo.es:8001',
-    'http://adriandeharo.es:8001'
+    'http://adriandeharo.es:8001',
+    'http://localhost:8002',
+    'http://adriandeharo.es:8002',
+    'http://bjjtube.adriandeharo.es:8001',
+    'http://bjjtube.adriandeharo.es:8002',
+    'http://bjjtube.guardiandelfaro.es:8001',
+    'http://bjjtube.guardiandelfaro.es:8002'
 ];
+
+// Add middleware to handle CORS properly
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+    if (origin && allowedOrigins.includes(origin)) {
+        res.header('Access-Control-Allow-Origin', origin);
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+        res.header('Access-Control-Allow-Credentials', 'true');
+    }
+    next();
+});
+
+// Add CORS middleware
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}));
+
+// Remove the HTTPS server configuration since we're using Nginx for SSL
+const PORT = config.PORT || 8001;
+app.listen(PORT, () => {
+    connect();
+    console.log(`Server running on port http://localhost:${PORT}`);
+});
 
 // Add middleware to handle HTTPS and CORS properly
 app.use((req, res, next) => {
