@@ -16,9 +16,12 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const app = express();
 const allowedOrigins = [
     'https://localhost:8001',
+    'http://localhost:8001',
     'https://bjjtube.guardiandelfaro.es',
-    'http://adriandeharo.es:8001',
-    'https://adriandeharo.es:8001'
+    'http://bjjtube.guardiandelfaro.es',
+    'https://adriandeharo.es:8001',
+    'http://adriandeharo.es:8001'
+
 ];
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
