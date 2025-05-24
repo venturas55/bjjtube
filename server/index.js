@@ -77,15 +77,17 @@ app.use((err, req, res, next) => {
 
 
 //Public
-//Bootstrap
-app.use((express.static(path.join(__dirname,"public"))));
-app.use('/js', express.static(path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')))
-app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')))
-app.use("/js", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/js")));
-app.use("/fonts", express.static(path.join(__dirname, "../node_modules/font-awesome/fonts")));
-app.use("/bootstrap/css", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css")));
-app.use("/fontawesome/css", express.static(path.join(__dirname, "../node_modules/font-awesome/css")));
-
+// Servir 'public' directamente
+app.use(express.static(path.join(__dirname, 'public')));
+// Bootstrap CSS en /bootstrap/css
+app.use('/bootstrap/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
+// Bootstrap JS en /bootstrap/js
+app.use('/bootstrap/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
+// jQuery en /jquery
+app.use('/jquery', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
+// Font Awesome CSS en /fontawesome/css
+app.use('/fontawesome/css', express.static(path.join(__dirname, 'node_modules/font-awesome/css')));
+app.use('/fontawesome/fonts', express.static(path.join(__dirname, 'node_modules/font-awesome/fonts')));
 
 
 const PORT = config.PORT || 8000;
