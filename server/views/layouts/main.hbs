@@ -2,7 +2,15 @@
 <html lang="en">
 
 <head>
-    {{>styles}}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="/img/GuardiandelFaro.svg">
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/fontawesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <meta id="direccion" direccion="{{direcciones}}">
+    <meta id="puerto" puerto="{{puerto}}">
     <title>BJJtube</title>
 </head>
 
@@ -11,7 +19,8 @@
     {{{body}}}
     <script src="/jquery/jquery.min.js" crossorigin="anonymous"></script>
 
-    {{>jQueryBootstrap}}
+    <script src="/bootstrap/js/popper.min.js" crossorigin="anonymous"></script>
+    <script src="/bootstrap/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
