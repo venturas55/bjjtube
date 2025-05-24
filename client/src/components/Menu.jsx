@@ -23,8 +23,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../redux/userSlice';
 import axios from 'axios';
 import { fetchAllFailure, fetchAllSuccess } from '../redux/videosSlice';
-import { BASE_FETCH_URL } from '../config.js';
-axios.defaults.baseURL = BASE_FETCH_URL;
+import { config } from '../config.js';
+axios.defaults.baseURL = config.BASE_FETCH_URL;
 
 const Container = styled.div`
     flex: 1;

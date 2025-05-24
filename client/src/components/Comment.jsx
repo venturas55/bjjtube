@@ -4,8 +4,8 @@ import { MdOutlineDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { fetchComments } from "../helper";
-import { BASE_FETCH_URL } from '../config.js';
-axios.defaults.baseURL = BASE_FETCH_URL;
+import { config } from '../config.js';
+axios.defaults.baseURL = config.BASE_FETCH_URL;
 
 const Container = styled.div`
   display: flex;

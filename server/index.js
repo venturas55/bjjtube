@@ -79,12 +79,13 @@ app.use((err, req, res, next) => {
 //Public
 //Bootstrap
 app.use((express.static(path.join(__dirname,"public"))));
-app.use("/css", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css")));
 app.use('/js', express.static(path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')))
 app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')))
 app.use("/js", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/js")));
 app.use("/fonts", express.static(path.join(__dirname, "../node_modules/font-awesome/fonts")));
-app.use("/css", express.static(path.join(__dirname, "../node_modules/font-awesome/css")));
+app.use("/bootstrap/css", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css")));
+app.use("/fontawesome/css", express.static(path.join(__dirname, "../node_modules/font-awesome/css")));
+
 
 
 const PORT = config.PORT || 8000;

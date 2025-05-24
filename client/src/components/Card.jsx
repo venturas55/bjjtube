@@ -5,8 +5,8 @@ import { SIZES, SPACING } from '../constants';
 import timeago from 'timeago.js';
 import axios from 'axios';
 import LoadingComp from './LoadingComp';
-import { BASE_FETCH_URL } from '../config.js';
-axios.defaults.baseURL = BASE_FETCH_URL;
+import { config } from '../config.js';
+axios.defaults.baseURL = config.BASE_FETCH_URL;
 
 const Container = styled.div`
 display: ${(props) => props.type === 'sm' && 'flex'};

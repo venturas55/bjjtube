@@ -10,8 +10,8 @@ import { SPACING, SIZES, COLORS } from '../constants';
 import { dislike, fetchSuccess, like } from '../redux/videoSlice';
 import { subscription } from '../redux/userSlice';
 import Recommendation from '../components/Recommendation';
-import { BASE_FETCH_URL } from '../config.js';
-axios.defaults.baseURL = BASE_FETCH_URL;
+import { config } from '../config.js';
+axios.defaults.baseURL = config.BASE_FETCH_URL;
 
 const Container = styled.div`
 display: flex;
