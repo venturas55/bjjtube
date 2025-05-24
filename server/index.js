@@ -20,7 +20,9 @@ const allowedOrigins = [
     'https://bjjtube.adriandeharo.es',
     'http://localhost:8001',
     'http://bjjtube.guardiandelfaro.es',
-    'http://bjjtube.adriandeharo.es'
+    'http://bjjtube.adriandeharo.es',
+    'https://adriandeharo.es:8001',
+    'http://adriandeharo.es:8001',
 ];
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 app.use(cors({
@@ -32,7 +34,7 @@ app.use(cors({
             callback(new Error('Not allowed by CORS'));
         }
     }
- }));
+}));
 app.set("views", path.join(__dirname, "views"));
 app.engine(".hbs",
   engine({
