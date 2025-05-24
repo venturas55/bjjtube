@@ -26,18 +26,38 @@ const allowedOrigins = [
     'http://adriandeharo.es:8001'
 ];
 
+// Add middleware to handle HTTPS and CORS properly
 app.use((req, res, next) => {
     const origin = req.headers.origin;
     if (origin) {
-        // If request is coming from HTTPS, force HTTPS in response
+        // Always allow HTTPS requests
         if (origin.startsWith('https://')) {
             res.header('Access-Control-Allow-Origin', origin);
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
             res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+            res.header('Access-Control-Allow-Credentials', 'true');
+            res.header('Access-Control-Expose-Headers', 'Content-Length');
         }
     }
     next();
 });
+
+// Add additional CORS middleware to ensure proper handling
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(null, false);
+        }
+    },
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Length'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+}));
 
 // Create a CORS middleware that will be applied to all routes
 const corsOptions = {
