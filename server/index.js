@@ -21,7 +21,9 @@ const allowedOrigins = [
     'https://adriandeharo.es:8001'
 ];
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-app.use(cors({
+
+// Create a CORS middleware that will be applied to all routes
+const corsOptions = {
     origin: (origin, callback) => {
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
@@ -30,8 +32,23 @@ app.use(cors({
         }
     },
     credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    exposedHeaders: ['Content-Length', 'X-Foo', 'X-Bar'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+};
+
+// Apply CORS middleware to all routes
+app.use(cors(corsOptions));
+
+// Also explicitly set the headers for all responses
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
 app.set("views", path.join(__dirname, "views"));
 app.engine(".hbs",
   engine({
